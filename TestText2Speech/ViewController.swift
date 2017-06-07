@@ -31,7 +31,7 @@ class ViewController: UIViewController,UIPickerViewDelegate,UIPickerViewDataSour
         var thisVoice:AVSpeechSynthesisVoice
         for thisVoice in voices
         {
-            myString = "\(thisVoice.name),\(thisVoice.language)"
+            myString = "\(thisVoice.name)"
             whoSpeaks.append(myString)
         }
         // Do any additional setup after loading the view, typically from a nib.
@@ -53,6 +53,10 @@ class ViewController: UIViewController,UIPickerViewDelegate,UIPickerViewDataSour
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
         return whoSpeaks[row]
     }
+    
+    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+        myString = whoSpeaks[row]
+    }
 
     @IBAction func btnSpeech_TouchUp(_ sender: Any) {
         let speechUtterance = AVSpeechUtterance(string:tvText.text)
@@ -60,6 +64,7 @@ class ViewController: UIViewController,UIPickerViewDelegate,UIPickerViewDataSour
         speechUtterance.rate = sldRate.value
         speechUtterance.pitchMultiplier = sldPitch.value
         speechUtterance.volume = sldVolume.value
+        speechUtterance.voice = AVSpeechSynthesisVoice.init(identifier: myString)
         
         speechSynth.speak(speechUtterance)
     }
